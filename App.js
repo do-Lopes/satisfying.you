@@ -9,15 +9,18 @@ import AgradecimentoParticipacao from './src/components/screens/AgradecimentoPar
 
 const Stack = createStackNavigator()
 
+// Componente principal do aplicativo
 const App = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Login">
+                {/* Definindo a primeira tela (Login) */}
                 <Stack.Screen 
                     name="Login" 
                     component={Login} 
                     options={{ headerShown: false }} 
                 />
+                 {/* Tela de Cadastro */}
                 <Stack.Screen 
                     name="Cadastro" 
                     component={Cadastro}
@@ -31,6 +34,7 @@ const App = () => {
                         headerBackImageStyle: estilos.navigationBackImage,
                     }}
                 />
+                 {/* Tela de Recuperar Senha */}
                 <Stack.Screen 
                     name="RecuperarSenha" 
                     component={RecuperarSenha} 
@@ -41,6 +45,7 @@ const App = () => {
                         headerTintColor: '#372775',
                     }}
                 />
+                {/* Tela de Agradecimento pela participação */}
                 <Stack.Screen 
                     name="AgradecimentoParticipacao" 
                     component={AgradecimentoParticipacao} 

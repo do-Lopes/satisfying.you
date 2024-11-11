@@ -2,10 +2,12 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useState } from 'react'
 
 
+// Componente funcional para a tela de recuperação de senha
 const RecuperacaoSenha = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [mensagemErro, setMensagemErro] = useState('')
 
+    // Função para validar o formato do e-mail inserido
     const validarEmail = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailRegex.test(email)) {
@@ -16,18 +18,23 @@ const RecuperacaoSenha = ({ navigation }) => {
     }
 
     return (
+        // View principal com estilo 'container'
         <View style={estilos.container}>
-
+            {/* Formulário para inserir o e-mail */}
             <View style={estilos.form}>
+                {/* Rótulo para o campo de e-mail */}
                 <Text style={estilos.label}>E-mail</Text>
+                {/* Campo de entrada para o e-mail */}
                 <TextInput
                     value={email}
                     onChangeText={setEmail}
                     keyboardType="email-address"
                     style={estilos.input}
                 />
+                {/* Exibe a mensagem de erro se houver alguma */}
                 {mensagemErro ? <Text style={estilos.mensagemErro}>{mensagemErro}</Text> : null}
 
+                {/* Botão para acionar a função de validação do e-mail */}
                 <TouchableOpacity style={estilos.botaoRecuperar} onPress={validarEmail}>
                     <Text style={estilos.textoBotao}>RECUPERAR</Text>
                 </TouchableOpacity>
@@ -36,6 +43,7 @@ const RecuperacaoSenha = ({ navigation }) => {
     )
 }
 
+// Estilos utilizados no componente
 const estilos = StyleSheet.create({
     container: {
         flex: 1,
