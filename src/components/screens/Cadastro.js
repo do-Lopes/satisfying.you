@@ -38,13 +38,13 @@ const Cadastro = (props) => {
                 secureTextEntry
                 style={estilos.input}/>
 
-<Text style={estilos.label}>Repetir senha</Text>
+                <Text style={estilos.label}>Repetir senha</Text>
                 <TextInput value={txtSenha2} onChangeText={setSenha2}
                 secureTextEntry
                 style={estilos.input}/>
 
                 <Text style={mostrarMensagem ? estilos.textoVermelho : estilos.textoRoxo}>
-                    O campo repetir senha difere da senha.
+                    O campo repetir senha difere da senha
                 </Text>
 
                 <TouchableOpacity style={estilos.mainButton} onPress={verificarLogin}>
@@ -104,7 +104,7 @@ const estilos = StyleSheet.create({
         paddingBottom: 8,
     },
     textoVermelho: {
-        color: 'red',
+        color: '#FD7979',
         fontFamily: 'AveriaLibre-Regular',
         paddingBottom: 8,
     }
