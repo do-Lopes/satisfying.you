@@ -4,17 +4,17 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 const AgradecimentoParticipacao = ({ navigation }) => {
     return (
         <View style={estilos.container}>
-            {/* Botão invisível para voltar */}
             <TouchableOpacity style={estilos.botaoVoltar} onPress={() => navigation.goBack()}>
-                <Icon name="arrow-back" size={24} color="transparent" /> {/* Ícone invisível */}
+                <Icon name="arrow-back" size={24} color="transparent" />
             </TouchableOpacity>
             
-            {/* Ícone de fechar no canto superior direito */}
             <View style={estilos.rectangle}>
                 <Icon name="close" size={36} color="#FFFFFF" />
             </View>
             
-            <Text style={estilos.headerText}>Obrigado por sua participação!</Text>
+            <Text style={estilos.headerText}>Obrigado por participar da pesquisa!
+
+Aguardamos você no próximo ano!</Text>
         </View>
     )
 }
