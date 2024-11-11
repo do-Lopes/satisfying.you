@@ -18,9 +18,7 @@ const App = () => {
                     headerStyle: estilos.headerDefault,
                     headerTitleStyle: estilos.headerTitle,
                     headerLeftContainerStyle: estilos.headerLeft,
-                    headerTintColor: '#372775',
-                    headerBackTitle: null,
-                    headerBackImageSyle: estilos.navigationBackImage,
+                    headerTintColor: '#4B369E',
                 }}
                 />
             </Stack.Navigator>
@@ -42,10 +40,6 @@ const estilos = StyleSheet.create({
     headerLeft: {
         paddingLeft: 0,
     },
-    navigationBackImage: {
-        width: 60,
-        height: 60,
-    }
 });
 
 

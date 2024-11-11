@@ -76,17 +76,17 @@ const estilos = StyleSheet.create({
         backgroundColor: '#372775',
     },
     header: {
-        width: '70%',
+        width: '60%',
         flex: 0.2,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         minHeight: 80,
         maxHeight: 80,
     },
     title: {
         alignItems: 'center',
-        fontSize: 40,
+        fontSize: 35,
         color: '#FFFFFF',
         fontFamily: 'AveriaLibre-Regular',
     },
@@ -165,7 +165,7 @@ const estilos = StyleSheet.create({
         paddingBottom: 8,
     },
     textoVermelho: {
-        color: 'red',
+        color: '#FD7979',
         fontFamily: 'AveriaLibre-Regular',
         paddingBottom: 8,
     }
