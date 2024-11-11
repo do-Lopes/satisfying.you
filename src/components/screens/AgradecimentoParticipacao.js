@@ -13,8 +13,7 @@ const AgradecimentoParticipacao = ({ navigation }) => {
             </View>
             
             <Text style={estilos.headerText}>Obrigado por participar da pesquisa!
-
-Aguardamos você no próximo ano!</Text>
+            <br />Aguardamos você no próximo ano!</Text>
         </View>
     )
 }
