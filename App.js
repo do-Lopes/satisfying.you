@@ -29,7 +29,7 @@ const App = () => {
                         headerStyle: estilos.headerDefault,
                         headerTitleStyle: estilos.headerTitle,
                         headerLeftContainerStyle: estilos.headerLeft,
-                        headerTintColor: '#372775',
+                        headerTintColor: '#4B369E',
                         headerBackTitle: null,
                         headerBackImageStyle: estilos.navigationBackImage,
                     }}
@@ -42,7 +42,7 @@ const App = () => {
                         title: 'Recuperação de Senha',
                         headerStyle: estilos.headerDefault,
                         headerTitleStyle: estilos.headerTitle,
-                        headerTintColor: '#372775',
+                        headerTintColor: '#4B369E',
                     }}
                 />
                 {/* Tela de Agradecimento pela participação */}
@@ -53,7 +53,7 @@ const App = () => {
                         title: 'Obrigado!',
                         headerStyle: estilos.headerDefault,
                         headerTitleStyle: estilos.headerTitle,
-                        headerTintColor: '#372775',
+                        headerTintColor: '#4B369E',
                     }}
                 />
             </Stack.Navigator>
@@ -75,10 +75,5 @@ const estilos = StyleSheet.create({
     headerLeft: {
         paddingLeft: 0,
     },
-    navigationBackImage: {
-        width: 60,
-        height: 60,
-    }
-})
 
 export default App
