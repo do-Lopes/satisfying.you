@@ -25,6 +25,10 @@ const Login = (props) => {
         props.navigation.navigate('Cadastro')
     }
 
+    const redirecionarRecuperar = () => {
+        props.navigation.navigate('RecuperarSenha')
+    }
+
 
 
     return (
@@ -60,7 +64,8 @@ const Login = (props) => {
                 onPress={redirecionarCadastro}>
                     <Text style={estilos.createAccountText}>Criar minha conta</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={estilos.forgotPasswordButton}>
+                <TouchableOpacity style={estilos.forgotPasswordButton}
+                onPress={redirecionarRecuperar}>
                     <Text style={estilos.forgotPasswordText}>Esqueci minha senha</Text>
                 </TouchableOpacity>
             </View>
