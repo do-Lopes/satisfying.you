@@ -75,5 +75,5 @@ const estilos = StyleSheet.create({
     headerLeft: {
         paddingLeft: 0,
     },
-
+})
 export default App
