@@ -1,23 +1,24 @@
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
-import { useState } from 'react'
-
+import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useState } from 'react';
 
 const RecuperacaoSenha = ({ navigation }) => {
-    const [email, setEmail] = useState('')
-    const [mensagemErro, setMensagemErro] = useState('')
+    const [email, setEmail] = useState('');
+    const [mensagemErro, setMensagemErro] = useState('');
 
     const validarEmail = () => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        if (!emailRegex.test(email)) {
-            setMensagemErro('E-mail parece ser inválido')
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email) {
+            setMensagemErro('Por favor, insira um e-mail.');
+        } else if (!emailRegex.test(email)) {
+            setMensagemErro('E-mail parece ser inválido');
         } else {
-            setMensagemErro('')
+            setMensagemErro('');
         }
-    }
+    };
 
     return (
         <View style={estilos.container}>
-
             <View style={estilos.form}>
                 <Text style={estilos.label}>E-mail</Text>
                 <TextInput
@@ -33,8 +34,8 @@ const RecuperacaoSenha = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
         </View>
-    )
-}
+    );
+};
 
 const estilos = StyleSheet.create({
     container: {
@@ -73,13 +74,13 @@ const estilos = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 4,
         alignItems: 'center',
-        marginTop: 30, 
+        marginTop: 30,
     },
     textoBotao: {
         color: '#FFFFFF',
         fontSize: 16,
         fontFamily: 'AveriaLibre-Regular',
     },
-})
+});
 
-export default RecuperacaoSenha
+export default RecuperacaoSenha;

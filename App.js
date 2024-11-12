@@ -12,18 +12,44 @@ const Stack = createStackNavigator()
 const App = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-                <Stack.Screen name="Cadastro" component={Cadastro}
-                options={{
-                    title: 'Nova Conta',
-                    headerStyle: estilos.headerDefault,
-                    headerTitleStyle: estilos.headerTitle,
-                    headerLeftContainerStyle: estilos.headerLeft,
-                    headerTintColor: '#372775',
-                    headerBackTitle: null,
-                    headerBackImageSyle: estilos.navigationBackImage,
-                }}
+            <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen 
+                    name="Login" 
+                    component={Login} 
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen 
+                    name="Cadastro" 
+                    component={Cadastro}
+                    options={{
+                        title: 'Nova Conta',
+                        headerStyle: estilos.headerDefault,
+                        headerTitleStyle: estilos.headerTitle,
+                        headerLeftContainerStyle: estilos.headerLeft,
+                        headerTintColor: '#372775',
+                        headerBackTitle: null,
+                        headerBackImageStyle: estilos.navigationBackImage,
+                    }}
+                />
+                <Stack.Screen 
+                    name="RecuperarSenha" 
+                    component={RecuperarSenha}
+                    options={{
+                        title: 'Recuperação de Senha',
+                        headerStyle: estilos.headerDefault,
+                        headerTitleStyle: estilos.headerTitle,
+                        headerTintColor: '#372775',
+                    }}
+                />
+                <Stack.Screen 
+                    name="AgradecimentoParticipacao" 
+                    component={AgradecimentoParticipacao}
+                    options={{
+                        title: 'Obrigado!',
+                        headerStyle: estilos.headerDefault,
+                        headerTitleStyle: estilos.headerTitle,
+                        headerTintColor: '#372775',
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
@@ -48,7 +74,6 @@ const estilos = StyleSheet.create({
         width: 60,
         height: 60,
     }
-});
-
+})
 
 export default App
