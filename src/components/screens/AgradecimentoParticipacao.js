@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useEffect } from 'react';
 
+//teste
 const AgradecimentoParticipacao = ({ navigation }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
