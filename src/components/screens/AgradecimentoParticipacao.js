@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useEffect } from 'react';
@@ -32,6 +33,35 @@ const AgradecimentoParticipacao = ({ navigation }) => {
     );
 };
 
+=======
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
+// Componente funcional AgradecimentoParticipacao
+const AgradecimentoParticipacao = ({ navigation }) => {
+    return (
+        <View style={estilos.container}>
+            {/* Botão de voltar que navega para a tela anterior */}
+            <TouchableOpacity style={estilos.botaoVoltar} onPress={() => navigation.goBack()}>
+                 {/* Ícone de seta para voltar */}
+                <Icon name="arrow-back" size={24} color="transparent" />
+            </TouchableOpacity>
+            
+            {/* Caixa retangular com ícone de fechamento */}
+            <View style={estilos.rectangle}>
+                <Icon name="close" size={36} color="transparent" />
+            </View>
+            
+            {/* Texto de agradecimento com estilo 'headerText' */}
+            <Text style={estilos.headerText}>Obrigado por participar da pesquisa!
+            <br />Aguardamos você no próximo ano!</Text>
+        </View>
+    )
+}
+
+
+// Estilos utilizados no componente
+>>>>>>> e5fe0247f94d235da60e3e7a6e7dffe41fdd4bcd
 const estilos = StyleSheet.create({
     container: {
         flex: 1,
@@ -67,6 +97,12 @@ const estilos = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+<<<<<<< HEAD
 });
 
 export default AgradecimentoParticipacao;
+=======
+})
+
+export default AgradecimentoParticipacao
+>>>>>>> e5fe0247f94d235da60e3e7a6e7dffe41fdd4bcd
