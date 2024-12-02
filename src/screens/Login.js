@@ -1,11 +1,14 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth_mod } from '../firebase/config';
 
 const Login = (props) => {
     const [txtEmail, setEmail] = useState('');
     const [txtSenha, setSenha] = useState('');
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
+    const [mensagemErro, setMensagemErro] = useState('');
 
     const verificarLogin = () => {
         let email = txtEmail.trim();
@@ -15,10 +18,29 @@ const Login = (props) => {
 
         if (!emailRegex.test(email) || !senha) {
             setMostrarMensagem(true);
+            setMensagemErro('E-mail e/ou senha inválido.');
         }
         else {
             setMostrarMensagem(false);
-            props.navigation.navigate('Drawer', { userEmail: email });
+        }
+        if(!mostrarMensagem){
+            signInWithEmailAndPassword(auth_mod, email, senha)
+                .then(() => {
+                    setMostrarMensagem(false);
+                    props.navigation.navigate('Drawer', { userEmail: email });
+                })
+                .catch((error) => {
+                    setMostrarMensagem(true);
+                    if (error.code === 'auth/invalid-email') {
+                        setMensagemErro('E-mail e/ou senha inválido.');
+                    }
+                    else if (error.code === 'auth/wrong-password') {
+                        setMensagemErro('E-mail e/ou senha inválido.');
+                    }
+                    else if (error.code === 'auth/user-not-found') {
+                        setMensagemErro('E-mail e/ou senha inválido.');
+                    }
+                });
         }
     };
 
@@ -49,7 +71,7 @@ const Login = (props) => {
                     style={estilos.input} />
 
                 <Text style={mostrarMensagem ? estilos.textoVermelho : estilos.textoRoxo}>
-                    E-mail e/ou senha inválido.
+                    {mensagemErro}
                 </Text>
 
                 <TouchableOpacity style={estilos.mainButton} onPress={verificarLogin}>
@@ -98,7 +120,6 @@ const estilos = StyleSheet.create({
         width: '70%',
         flexDirection: 'column',
         minHeight: 150,
-        maxHeight: 150,
         marginBottom: 30,
     },
     label: {
@@ -108,18 +129,19 @@ const estilos = StyleSheet.create({
         fontFamily: 'AveriaLibre-Regular',
     },
     input: {
-        padding: 7,
+        paddingVertical: 5,
+        paddingLeft: 10,
         fontSize: 16,
         backgroundColor: '#FFFFFF',
         color: '#3F92C5',
         fontFamily: 'AveriaLibre-Regular',
-        height: '20%',
+        height: 30,
     },
     mainButton: {
         backgroundColor: '#37BD6D',
         padding: 4,
         alignItems: 'center',
-        marginTop: 5,
+        marginTop: 10,
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#37BD6D',
@@ -165,12 +187,10 @@ const estilos = StyleSheet.create({
     textoRoxo: {
         color: '#372775',
         fontFamily: 'AveriaLibre-Regular',
-        paddingBottom: 8,
     },
     textoVermelho: {
         color: '#FD7979',
         fontFamily: 'AveriaLibre-Regular',
-        paddingBottom: 8,
     },
 });
 

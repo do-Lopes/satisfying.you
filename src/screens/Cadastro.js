@@ -1,11 +1,17 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import { auth_mod } from '../firebase/config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const Cadastro = (props) => {
     const [txtEmail, setEmail] = useState('');
     const [txtSenha1, setSenha1] = useState('');
     const [txtSenha2, setSenha2] = useState('');
-    const [mostrarMensagem, setMostrarMensagem] = useState(false);
+    const [mostrarMensagemSenha, setMostrarMensagemSenha] = useState(false);
+    const [mostrarMensagemEmail, setMostrarMensagemEmail] = useState(false);
+    const [mensagemErroSenha, setMensagemErroSenha] = useState('_');
+    const [mensagemErroEmail, setMensagemErroEmail] = useState('_');
+
 
     const verificarLogin = () => {
         let email = txtEmail.trim();
@@ -14,13 +20,42 @@ const Cadastro = (props) => {
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!emailRegex.test(email) || senha1 !== senha2) {
-            setMostrarMensagem(true);
+        if (!emailRegex.test(email)) {
+            setMostrarMensagemEmail(true);
+            setMensagemErroEmail('Digite um email válido')
+        } else {
+            setMostrarMensagemEmail(false);
         }
-        else {
-            props.navigation.navigate('Login');
+        if (senha1 === '' && senha2 === '') {
+            setMostrarMensagemSenha(true);
+            setMensagemErroSenha('Digite uma senha')
+        } else {
+            if (senha1 !== senha2) {
+                setMostrarMensagemSenha(true);
+                setMensagemErroSenha('O campo repetir senha difere da senha')
+            } else {
+                if (senha1.length < 6) {
+                    setMostrarMensagemSenha(true);
+                    setMensagemErroSenha('A senha é muito fraca')
+                } else {
+                    setMostrarMensagemSenha(false);
+                }
+            }
+        }
+        if (!mostrarMensagemSenha) {
+            createUserWithEmailAndPassword(auth_mod, email, senha1)
+                .then(() => {
+                    props.navigation.navigate('Login');
+                })
+                .catch((error) => {
+                    if (error.code === 'auth/email-already-in-use') {
+                        setMostrarMensagemEmail(true);
+                        setMensagemErroEmail('O email ja está em uso');
+                    }
+                });
         }
     };
+
 
     return (
         <View style={estilos.container}>
@@ -30,6 +65,10 @@ const Cadastro = (props) => {
                 <TextInput value={txtEmail} onChangeText={setEmail}
                     keyboardType="email-address"
                     style={estilos.input} />
+
+                <Text style={mostrarMensagemEmail ? estilos.textoVermelho : estilos.textoRoxo}>
+                    {mensagemErroEmail}
+                </Text>
 
                 <Text style={estilos.label}>Senha</Text>
                 <TextInput value={txtSenha1} onChangeText={setSenha1}
@@ -41,17 +80,18 @@ const Cadastro = (props) => {
                     secureTextEntry
                     style={estilos.input} />
 
-                <Text style={mostrarMensagem ? estilos.textoVermelho : estilos.textoRoxo}>
-                    O campo repetir senha difere da senha
+                <Text style={mostrarMensagemSenha ? estilos.textoVermelho : estilos.textoRoxo}>
+                    {mensagemErroSenha}
                 </Text>
-
+            </View>
+            <View style={estilos.redirectButtons}>
                 <TouchableOpacity style={estilos.mainButton} onPress={verificarLogin}>
                     <Text style={estilos.mainButtonText}>CADASTRAR</Text>
                 </TouchableOpacity>
             </View>
         </View>
-    )
-}
+    );
+};
 
 const estilos = StyleSheet.create({
     container: {
@@ -61,12 +101,9 @@ const estilos = StyleSheet.create({
         backgroundColor: '#372775',
     },
     form: {
-        flex: 0.2,
         width: '70%',
         flexDirection: 'column',
         minHeight: 150,
-        maxHeight: 150,
-        marginBottom: 30,
     },
     label: {
         color: '#FFFFFF',
@@ -75,18 +112,27 @@ const estilos = StyleSheet.create({
         fontFamily: 'AveriaLibre-Regular',
     },
     input: {
-        padding: 7,
+        paddingVertical: 5,
+        paddingLeft: 10,
         fontSize: 16,
         backgroundColor: '#FFFFFF',
         color: '#3F92C5',
         fontFamily: 'AveriaLibre-Regular',
-        height: '20%',
+        boxSizing: 'border-box',
+        height: 30,
+    },
+    redirectButtons: {
+        flex: 0.2,
+        flexDirection: 'column',
+        width: '70%',
+        minHeight: 50,
+        maxHeight: 50,
     },
     mainButton: {
         backgroundColor: '#37BD6D',
         padding: 4,
         alignItems: 'center',
-        marginTop: 5,
+        marginTop: 10,
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#37BD6D',
@@ -99,12 +145,10 @@ const estilos = StyleSheet.create({
     textoRoxo: {
         color: '#372775',
         fontFamily: 'AveriaLibre-Regular',
-        paddingBottom: 8,
     },
     textoVermelho: {
         color: '#FD7979',
         fontFamily: 'AveriaLibre-Regular',
-        paddingBottom: 8,
     },
 });
 

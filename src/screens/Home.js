@@ -17,17 +17,15 @@ const Home = (props) => {
             </TouchableOpacity>
 
             <ScrollView horizontal style={estilos.scrollContent}>
-                {/* <View style={estilos.mainContent}> */}
-                    <HomeCard name="devices" color="brown" texto="SECOMP 2023" data="10/10/2023" />
+                <HomeCard name="devices" color="brown" texto="SECOMP 2023" data="10/10/2023" />
 
-                    <HomeCard name="groups" color="grey" texto="UBUNTU 2022" data="05/06/2022" />
+                <HomeCard name="groups" color="grey" texto="UBUNTU 2022" data="05/06/2022" />
 
-                    <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
+                <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
 
-                    <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
+                <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
 
-                    <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
-                {/* </View> */}
+                <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
             </ScrollView>
             <View>
                 <TouchableOpacity style={estilos.mainButton} onPress={redirecionarNovaPesquisa}>
@@ -58,13 +56,6 @@ const estilos = StyleSheet.create({
         height: '100%',
         color: 'grey',
         fontFamily: 'AveriaLibre-Regular',
-    },
-    mainContent: {
-        // verticalAlign: 'middle',
-        // flexDirection: 'row',
-        // alignContent: 'center',
-        // justifyContent: 'space-between',
-        // paddingTop: 15,
     },
     scrollContent: {
         verticalAlign: 'middle',
