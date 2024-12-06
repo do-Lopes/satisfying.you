@@ -3,45 +3,71 @@ import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth_mod } from '../firebase/config';
+import { reducerLogin } from '../redux/loginSlice';
+import { useDispatch } from 'react-redux';
 
 const Login = (props) => {
     const [txtEmail, setEmail] = useState('');
     const [txtSenha, setSenha] = useState('');
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagemErro, setMensagemErro] = useState('');
+    const dispatch = useDispatch();
 
     const verificarLogin = () => {
         let email = txtEmail.trim();
         let senha = txtSenha.trim();
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        signInWithEmailAndPassword(auth_mod, email, senha)
+            .then((userLogged) => {
+                dispatch(reducerLogin({email: email, uid: userLogged.user.uid}))
+                props.navigation.navigate('Drawer');
+            })
+            .catch((error) => {
+                console.log(error)
+                setMostrarMensagem(true);
+                if (error.code === 'auth/invalid-email') {
+                    setMensagemErro('E-mail e/ou senha inválido.');
+                }
+                else if (error.code === 'auth/missing-password') {
+                    setMensagemErro('E-mail e/ou senha inválido.');
+                }
+                else if (error.code === 'auth/invalid-credential') {
+                    setMensagemErro('E-mail e/ou senha inválido.');
+                }
+                else if (error.code === 'auth/too-many-requests') {
+                    setMensagemErro('Tente novamente mais tarde');
+                }
+            });
 
-        if (!emailRegex.test(email) || !senha) {
-            setMostrarMensagem(true);
-            setMensagemErro('E-mail e/ou senha inválido.');
-        }
-        else {
-            setMostrarMensagem(false);
-        }
-        if(!mostrarMensagem){
-            signInWithEmailAndPassword(auth_mod, email, senha)
-                .then(() => {
-                    setMostrarMensagem(false);
-                    props.navigation.navigate('Drawer', { userEmail: email });
-                })
-                .catch((error) => {
-                    setMostrarMensagem(true);
-                    if (error.code === 'auth/invalid-email') {
-                        setMensagemErro('E-mail e/ou senha inválido.');
-                    }
-                    else if (error.code === 'auth/wrong-password') {
-                        setMensagemErro('E-mail e/ou senha inválido.');
-                    }
-                    else if (error.code === 'auth/user-not-found') {
-                        setMensagemErro('E-mail e/ou senha inválido.');
-                    }
-                });
-        }
+        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // if (!emailRegex.test(email) || !senha) {
+        //     setMostrarMensagem(true);
+        //     setMensagemErro('E-mail e/ou senha inválido.');
+        // }
+        // else {
+        //     setMostrarMensagem(false);
+        // }
+        // if(!mostrarMensagem){
+        //     signInWithEmailAndPassword(auth_mod, email, senha)
+        //         .then((userLogged) => {
+        //             dispatch(reducerLogin({email: email, uid: userLogged.user.uid}))
+        //             props.navigation.navigate('Drawer');
+        //         })
+        //         .catch((error) => {
+        //             console.log(error)
+        //             setMostrarMensagem(true);
+        //             if (error.code === 'auth/invalid-email') {
+        //                 setMensagemErro('E-mail e/ou senha inválido.');
+        //             }
+        //             else if (error.code === 'auth/wrong-password') {
+        //                 setMensagemErro('E-mail e/ou senha inválido.');
+        //             }
+        //             else if (error.code === 'auth/invalid-credential') {
+        //                 setMensagemErro('E-mail e/ou senha inválido.');
+        //             }
+        //         });
+        // }
     };
 
     const redirecionarCadastro = () => {

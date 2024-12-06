@@ -12,115 +12,119 @@ import ModificarPesquisa from './src/screens/ModificarPesquisa';
 import Coleta from './src/screens/Coleta';
 import Relatorio from './src/screens/Relatorio';
 import Drawer from './src/screens/Drawer';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
+import { useSelector } from 'react-redux';
 
 
 const Stack = createStackNavigator();
 
 const App = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
-                <Stack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Cadastro"
-                    component={Cadastro}
-                    options={{
-                        title: 'Nova Conta',
-                        headerStyle: estilos.headerDefault,
-                        headerTitleStyle: estilos.headerTitle,
-                        headerLeftContainerStyle: estilos.headerLeft,
-                        headerTintColor: '#5139AD',
-                        headerBackTitle: null,
-                        headerBackImageStyle: estilos.navigationBackImage,
-                    }}
-                />
-                <Stack.Screen
-                    name="RecuperarSenha"
-                    component={RecuperarSenha}
-                    options={{
-                        title: 'Recuperação de Senha',
-                        headerStyle: estilos.headerDefault,
-                        headerTitleStyle: estilos.headerTitle,
-                        headerTintColor: '#5139AD',
-                    }}
-                />
-                <Stack.Screen
-                    name="AgradecimentoParticipacao"
-                    component={AgradecimentoParticipacao}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="NovaPesquisa"
-                    component={NovaPesquisa}
-                    options={{
-                        headerStyle: estilos.headerDefault,
-                        headerTitleStyle: estilos.headerTitle,
-                        headerLeftContainerStyle: estilos.headerLeft,
-                        headerTintColor: '#5139AD',
-                        headerBackTitle: null,
-                        headerBackImageStyle: estilos.navigationBackImage,
-                    }}
-                />
-                <Stack.Screen
-                    name="AcoesPesquisa"
-                    component={AcoesPesquisa}
-                    options={({route}) => ({
-                        title: route.params.texto,
-                        headerStyle: estilos.headerDefault,
-                        headerTitleStyle: estilos.headerTitle,
-                        headerLeftContainerStyle: estilos.headerLeft,
-                        headerTintColor: '#5139AD',
-                        headerBackTitle: null,
-                        headerBackImageStyle: estilos.navigationBackImage,
-                    })}
-                />
-                <Stack.Screen
-                    name="ModificarPesquisa"
-                    component={ModificarPesquisa}
-                    options={{
-                        title: 'Modificar Pesquisa',
-                        headerStyle: estilos.headerDefault,
-                        headerTitleStyle: estilos.headerTitle,
-                        headerLeftContainerStyle: estilos.headerLeft,
-                        headerTintColor: '#5139AD',
-                        headerBackTitle: null,
-                        headerBackImageStyle: estilos.navigationBackImage,
-                    }}
-                />
-                <Stack.Screen
-                    name="Coleta"
-                    component={Coleta}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="Relatorio"
-                    component={Relatorio}
-                    options={{
-                        title: 'Relatorio',
-                        headerStyle: estilos.headerDefault,
-                        headerTitleStyle: estilos.headerTitle,
-                        headerLeftContainerStyle: estilos.headerLeft,
-                        headerTintColor: '#5139AD',
-                        headerBackTitle: null,
-                        headerBackImageStyle: estilos.navigationBackImage,
-                    }}
-                />
-                <Stack.Screen
-                    name="Drawer"
-                    component={Drawer}
-                    options={{ headerShown: false }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Provider store={store}>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="Login">
+                    <Stack.Screen
+                        name="Login"
+                        component={Login}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Cadastro"
+                        component={Cadastro}
+                        options={{
+                            title: 'Nova Conta',
+                            headerStyle: estilos.headerDefault,
+                            headerTitleStyle: estilos.headerTitle,
+                            headerLeftContainerStyle: estilos.headerLeft,
+                            headerTintColor: '#5139AD',
+                            headerBackTitle: null,
+                            headerBackImageStyle: estilos.navigationBackImage,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="RecuperarSenha"
+                        component={RecuperarSenha}
+                        options={{
+                            title: 'Recuperação de Senha',
+                            headerStyle: estilos.headerDefault,
+                            headerTitleStyle: estilos.headerTitle,
+                            headerTintColor: '#5139AD',
+                        }}
+                    />
+                    <Stack.Screen
+                        name="AgradecimentoParticipacao"
+                        component={AgradecimentoParticipacao}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Home"
+                        component={Home}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="NovaPesquisa"
+                        component={NovaPesquisa}
+                        options={{
+                            headerStyle: estilos.headerDefault,
+                            headerTitleStyle: estilos.headerTitle,
+                            headerLeftContainerStyle: estilos.headerLeft,
+                            headerTintColor: '#5139AD',
+                            headerBackTitle: null,
+                            headerBackImageStyle: estilos.navigationBackImage,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="AcoesPesquisa"
+                        component={AcoesPesquisa}
+                        options={{                            
+                            headerStyle: estilos.headerDefault,
+                            headerTitleStyle: estilos.headerTitle,
+                            headerLeftContainerStyle: estilos.headerLeft,
+                            headerTintColor: '#5139AD',
+                            headerBackTitle: null,
+                            headerBackImageStyle: estilos.navigationBackImage,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="ModificarPesquisa"
+                        component={ModificarPesquisa}
+                        options={{
+                            title: 'Modificar Pesquisa',
+                            headerStyle: estilos.headerDefault,
+                            headerTitleStyle: estilos.headerTitle,
+                            headerLeftContainerStyle: estilos.headerLeft,
+                            headerTintColor: '#5139AD',
+                            headerBackTitle: null,
+                            headerBackImageStyle: estilos.navigationBackImage,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Coleta"
+                        component={Coleta}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="Relatorio"
+                        component={Relatorio}
+                        options={{
+                            title: 'Relatorio',
+                            headerStyle: estilos.headerDefault,
+                            headerTitleStyle: estilos.headerTitle,
+                            headerLeftContainerStyle: estilos.headerLeft,
+                            headerTintColor: '#5139AD',
+                            headerBackTitle: null,
+                            headerBackImageStyle: estilos.navigationBackImage,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Drawer"
+                        component={Drawer}
+                        options={{ headerShown: false }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </Provider>
     )
 }
 

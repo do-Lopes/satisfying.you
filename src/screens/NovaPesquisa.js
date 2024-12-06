@@ -1,18 +1,102 @@
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Pressable, Image } from 'react-native';
 import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { collection, addDoc } from 'firebase/firestore';
+import { db_firestore } from '../firebase/config';
+import { useSelector } from 'react-redux';
+import { launchImageLibrary } from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
+
 
 const NovaPesquisa = (props) => {
     const [txtNome, setNome] = useState('');
     const [txtData, setData] = useState('');
-    const [mostrarMensagem, setMostrarMensagem] = useState(false);
+    const [imagem, setImagem] = useState();
+    const [mostarMensagemNome, setMostarMensagemNome] = useState(false);
+    const [mostrarMensagemData, setMostrarMensagemData] = useState(false);
+    const [mostrarMensagemImagem, setMostrarMensagemImagem] = useState(false);
 
-    const redirecionarHome = () => {
-        if (!txtNome.trim() || !txtData.trim()) {
-            setMostrarMensagem(true);
+    const uid = useSelector((state) => state.login.uid);
+
+    const pesquisaCollection = collection(db_firestore, `usuarios/${uid}/pesquisas`);
+
+    const convertUriToBase64 = async (uri) => {
+        const resizedImage = await ImageResizer.createResizedImage(
+            uri,
+            100,
+            100,
+            'JPEG',
+            100
+        );
+
+        const imageUri = await fetch(resizedImage.uri);
+        const imageBlob = await imageUri.blob();
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagem(reader.result);
+        };
+        reader.readAsDataURL(imageBlob);
+    };
+
+    const pickImage = () => {
+        launchImageLibrary({ mediaType: 'photo' }, (result) => {
+            if(result.didCancel){
+                setImagem();
+            } else {
+                convertUriToBase64(result.assets[0].uri);
+            }
+        });
+    }
+
+    const addPesquisa = (nome, data) => {
+        const docPesquisa = {
+            nome: nome,
+            data: data,
+            imagem: imagem,
+            pessimo: 0,
+            ruim: 0,
+            neutro: 0,
+            bom: 0,
+            excelente: 0,
+        };
+        addDoc(pesquisaCollection, docPesquisa);
+    }
+
+    const verificarDados = () => {//Por algum motivo é necessário apertar duas vezes para cadastrar no sistema. um clique para alternar o estado de 'setMostarMensagemNome' 'setMostrarMensagemData' e 'setMostrarMensagemImagem'. verifique os logs comentados abaixo pra ver.
+        const nome = txtNome.trim();
+        const data = txtData.trim();
+        const dataRegex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+
+        if (nome === '') {
+            setMostarMensagemNome(true);
         } else {
-            props.navigation.pop();
+            setMostarMensagemNome(false);
         }
+        if (data === '') {
+            setMostrarMensagemData(true);
+        } else {
+            if (!dataRegex.test(data)) {
+                setMostrarMensagemData(true);
+            } else {
+                setMostrarMensagemData(false);
+            }
+        }
+        if (imagem === undefined){
+            setMostrarMensagemImagem(true)
+        }else{
+            setMostrarMensagemImagem(false)
+        }
+        // console.log("log do setMostarMensagemNome:" + mostarMensagemNome)
+        // console.log("log do setMostrarMensagemData: " + mostrarMensagemData)
+        // console.log("log do setMostrarMensagemImagem: " + mostrarMensagemImagem)
+
+        //addDados(mostarMensagemNome, mostrarMensagemData, mostrarMensagemImagem)
+
+         if (!mostarMensagemNome && !mostrarMensagemData && !mostrarMensagemImagem) {
+            addPesquisa(nome, data);
+            console.log('adicionou no banco de dados')
+            props.navigation.pop();
+         }
     };
 
     return (
@@ -24,28 +108,32 @@ const NovaPesquisa = (props) => {
                     onChangeText={setNome}
                     style={estilos.input}
                 />
-                <Text style={mostrarMensagem ? estilos.textoVermelho : estilos.textoRoxo}>Preencha no nome da pesquisa</Text>
+                <Text style={mostarMensagemNome ? estilos.textoVermelho : estilos.textoRoxo}>Digite um nome</Text>
 
                 <Text style={estilos.label}>Data</Text>
                 <TouchableOpacity style={estilos.inputComIcone}>
                     <TextInput
-                        keyboardType="number-pad"
                         value={txtData}
                         onChangeText={setData}
                         style={estilos.internInput}
                     />
                     <Icon name="calendar-month" size={30} color="#989898" />
                 </TouchableOpacity>
-                <Text style={mostrarMensagem ? estilos.textoVermelho : estilos.textoRoxo}>Preencha a data</Text>
+                <Text style={mostrarMensagemData ? estilos.textoVermelho : estilos.textoRoxo}>Digite uma data válida no padrão: DD/MM/YYYY</Text>
+
 
                 <Text style={estilos.label}>Imagem</Text>
-                <TextInput
-                    style={estilos.imageInput}
-                    placeholder="Câmera/Galeira de imagens"
-                />
+                <Pressable onPress={pickImage} style={imagem ? estilos.imageInputComImagem : estilos.imageInputSemImagem}>
+                    {imagem ? 
+                    <Image source={{ uri: imagem }} style={{height: 70, width: 70}}/> :
+                    <Text style={estilos.imageInputText}>Escolha uma imagem</Text>
+                    }
+                </Pressable>
+                <Text style={mostrarMensagemImagem ? estilos.textoVermelho : estilos.textoRoxo}>Insira uma imagem</Text>
+
             </View>
             <View style={estilos.redirectButtons}>
-                <TouchableOpacity style={estilos.mainButton} onPress={redirecionarHome}>
+                <TouchableOpacity style={estilos.mainButton} onPress={verificarDados}>
                     <Text style={estilos.mainButtonText}>CADASTRAR</Text>
                 </TouchableOpacity>
             </View>
@@ -61,12 +149,10 @@ const estilos = StyleSheet.create({
         backgroundColor: '#372775',
     },
     form: {
-        flex: 0.2,
         width: '70%',
         flexDirection: 'column',
         minHeight: 200,
         maxHeight: 'auto',
-        marginBottom: 40,
         marginTop: 10,
         backgroundColor: '#372775',
     },
@@ -76,30 +162,44 @@ const estilos = StyleSheet.create({
         fontFamily: 'AveriaLibre-Regular',
     },
     input: {
-        padding: 7,
+        paddingVertical: 5,
+        paddingLeft: 10,
         fontSize: 16,
         backgroundColor: '#FFFFFF',
         color: '#3F92C5',
         fontFamily: 'AveriaLibre-Regular',
-        height: '20%',
+        height: 30,
     },
     internInput: {
-        padding: 7,
+        paddingVertical: 5,
+        paddingLeft: 10,
         fontSize: 16,
         backgroundColor: '#FFFFFF',
         color: '#3F92C5',
         fontFamily: 'AveriaLibre-Regular',
-        height: '100%',
+        height: 30,
         flex: 1,
     },
-    imageInput: {
-        padding: 7,
+    imageInputComImagem: {
+        fontSize: 16,
+        width: '50%',
+        backgroundColor: '#372775',
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    imageInputSemImagem: {
         fontSize: 16,
         width: '50%',
         backgroundColor: '#FFFFFF',
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    imageInputText: {
         color: '#3F92C5',
         fontFamily: 'AveriaLibre-Regular',
-        height: 60,
+        backgroundColor: '#FFFFFF'
     },
     mainButton: {
         backgroundColor: '#37BD6D',

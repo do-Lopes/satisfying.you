@@ -1,10 +1,39 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import 'react-native-gesture-handler';
 import HomeCard from '../components/HomeCard';
-import { TextInput, ScrollView } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { collection, query, onSnapshot } from 'firebase/firestore';
+import { db_firestore } from '../firebase/config';
 
 const Home = (props) => {
+
+    const [listaPesquisas, setListaPesquisas] = useState();
+
+    const uid = useSelector((state) => state.login.uid);
+    const pesquisaCollection = collection(db_firestore, `usuarios/${uid}/pesquisas`);
+
+    useEffect(() => {
+        const q = query(pesquisaCollection)
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const pesquisas = [];
+            snapshot.forEach((doc) => {
+                pesquisas.push({
+                    id: doc.id,
+                    ...doc.data(),
+                });
+            });
+            setListaPesquisas(pesquisas);
+        });
+    }, [])//ignorar esse erro, no video o professor utiliza esse macete
+
+    const itemPesquisa = ({item}) => {
+        return(
+            <HomeCard nome={item.nome} data={item.data} imagem={item.imagem} pessimo={item.pessimo} ruim={item.ruim} neutro={item.neutro} bom={item.bom} excelente={item.excelente}/>
+        )
+    }
 
     const redirecionarNovaPesquisa = () => {
         props.navigation.navigate('NovaPesquisa');
@@ -16,17 +45,8 @@ const Home = (props) => {
                 <TextInput style={estilos.textInput} placeholder="Insira o termo de busca" />
             </TouchableOpacity>
 
-            <ScrollView horizontal style={estilos.scrollContent}>
-                <HomeCard name="devices" color="brown" texto="SECOMP 2023" data="10/10/2023" />
+            <FlatList horizontal style={estilos.scrollContent} data={listaPesquisas} renderItem={itemPesquisa} keyExtractor={pesquisa => pesquisa.id}/>
 
-                <HomeCard name="groups" color="grey" texto="UBUNTU 2022" data="05/06/2022" />
-
-                <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
-
-                <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
-
-                <HomeCard name="woman" color="red" texto="MENINAS CPU" data="01/04/2022" />
-            </ScrollView>
             <View>
                 <TouchableOpacity style={estilos.mainButton} onPress={redirecionarNovaPesquisa}>
                     <Text style={estilos.mainButtonText}>Nova Pesquisa</Text>
@@ -58,11 +78,11 @@ const estilos = StyleSheet.create({
         fontFamily: 'AveriaLibre-Regular',
     },
     scrollContent: {
+        backgroundColor: '#372775',
         verticalAlign: 'middle',
         flexDirection: 'row',
         alignContent: 'center',
-        paddingTop: 15,
-        paddingBottom: 20,
+        marginTop: 15,
     },
     mainButton: {
         backgroundColor: '#37BD6D',

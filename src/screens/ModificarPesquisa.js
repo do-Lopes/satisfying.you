@@ -27,7 +27,7 @@ const ModificarPesquisa = ({ route }) => {
     return (
         <View style={estilos.container}>
             <View style={estilos.form}>
-                <Text style={estilos.label}>cardTexto</Text>
+                <Text style={estilos.label}>Nome</Text>
                 <TextInput
                     value={txtNome}
                     onChangeText={setNome}

@@ -1,15 +1,22 @@
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-const AcoesPesquisa = ({ route }) => {
+const AcoesPesquisa = () => {
 
     const navigation = useNavigation();
+    const nome = useSelector((state) => state.pesquisa.nome);//os dados vem do HomeCard.js
 
-    const { texto, color, name, cardData } = route.params;
+    useEffect(() => {
+        navigation.setOptions({
+            title: nome,
+        });
+    }, [nome]);
 
     const redirecionarModificarPesquisa = () => {
-        navigation.navigate('ModificarPesquisa', {texto:texto, color: color, name: name, cardData: cardData});
+        navigation.navigate('ModificarPesquisa');
     };
 
     const redirecionarColeta = () => {
@@ -44,9 +51,6 @@ const AcoesPesquisa = ({ route }) => {
     );
 };
 
-AcoesPesquisa.options = (props) => ({
-    title: props.name
-})
 
 const estilos = StyleSheet.create({
     container: {

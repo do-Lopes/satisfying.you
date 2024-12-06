@@ -1,9 +1,12 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View, Text, StyleSheet } from 'react-native';
+import { reducerLogout } from '../redux/loginSlice';
+import { useDispatch } from 'react-redux';
 
 const CustomDrawer = (props) => {
     const name = props.name;
+    const dispatch = useDispatch();
     return (
         <View style={estilos.container}>
             <View style={estilos.header}>
@@ -14,7 +17,12 @@ const CustomDrawer = (props) => {
                 <DrawerItemList {...props} />
             </DrawerContentScrollView>
             <View style={estilos.content}>
-                <DrawerItem labelStyle={{ color: '#FFFFFF', fontFamily: 'AveriaLibre-Regular', fontSize: 25 }} icon={() => (<Icon name="logout" size={25} color="#FFFFFF" />)} label="Sair" onPress={() => props.navigation.popToTop()} />
+                <DrawerItem labelStyle={{ color: '#FFFFFF', fontFamily: 'AveriaLibre-Regular', fontSize: 25 }} 
+                icon={() => (<Icon name="logout" size={25} color="#FFFFFF" />)} 
+                label="Sair" 
+                onPress={() => {
+                    dispatch(reducerLogout())
+                    props.navigation.popToTop()}} />
             </View>
         </View>
     );

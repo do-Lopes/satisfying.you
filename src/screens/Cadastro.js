@@ -2,6 +2,8 @@ import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useState } from 'react';
 import { auth_mod } from '../firebase/config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
+import { db_firestore } from '../firebase/config';
 
 const Cadastro = (props) => {
     const [txtEmail, setEmail] = useState('');
@@ -9,11 +11,17 @@ const Cadastro = (props) => {
     const [txtSenha2, setSenha2] = useState('');
     const [mostrarMensagemSenha, setMostrarMensagemSenha] = useState(false);
     const [mostrarMensagemEmail, setMostrarMensagemEmail] = useState(false);
-    const [mensagemErroSenha, setMensagemErroSenha] = useState('_');
-    const [mensagemErroEmail, setMensagemErroEmail] = useState('_');
+    const [mensagemErroSenha, setMensagemErroSenha] = useState('');
+    const [mensagemErroEmail, setMensagemErroEmail] = useState('');
 
+    const addUsuario = (email, id) => {
+        const docUser = {
+            email: email,
+        };
+        setDoc(doc(db_firestore, "usuarios", id), docUser)
+    }
 
-    const verificarLogin = () => {
+    const verificarLogin = () => {// Por algum motivo para dar login utilizando essa lógica é necessário apertar para entrar duas vezes
         let email = txtEmail.trim();
         let senha1 = txtSenha1.trim();
         let senha2 = txtSenha2.trim();
@@ -22,21 +30,21 @@ const Cadastro = (props) => {
 
         if (!emailRegex.test(email)) {
             setMostrarMensagemEmail(true);
-            setMensagemErroEmail('Digite um email válido')
+            setMensagemErroEmail('Digite um email válido');
         } else {
             setMostrarMensagemEmail(false);
         }
         if (senha1 === '' && senha2 === '') {
             setMostrarMensagemSenha(true);
-            setMensagemErroSenha('Digite uma senha')
+            setMensagemErroSenha('Digite uma senha');
         } else {
             if (senha1 !== senha2) {
                 setMostrarMensagemSenha(true);
-                setMensagemErroSenha('O campo repetir senha difere da senha')
+                setMensagemErroSenha('O campo repetir senha difere da senha');
             } else {
                 if (senha1.length < 6) {
                     setMostrarMensagemSenha(true);
-                    setMensagemErroSenha('A senha é muito fraca')
+                    setMensagemErroSenha('A senha é muito fraca');
                 } else {
                     setMostrarMensagemSenha(false);
                 }
@@ -44,10 +52,12 @@ const Cadastro = (props) => {
         }
         if (!mostrarMensagemSenha) {
             createUserWithEmailAndPassword(auth_mod, email, senha1)
-                .then(() => {
+                .then((userLogged) => {
+                    addUsuario(email, userLogged.user.uid);
                     props.navigation.navigate('Login');
                 })
                 .catch((error) => {
+                    console.log(error)
                     if (error.code === 'auth/email-already-in-use') {
                         setMostrarMensagemEmail(true);
                         setMensagemErroEmail('O email ja está em uso');
@@ -59,7 +69,6 @@ const Cadastro = (props) => {
 
     return (
         <View style={estilos.container}>
-
             <View style={estilos.form}>
                 <Text style={estilos.label}>Email</Text>
                 <TextInput value={txtEmail} onChangeText={setEmail}
