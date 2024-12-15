@@ -31,7 +31,7 @@ const Home = (props) => {
 
     const itemPesquisa = ({item}) => {
         return(
-            <HomeCard nome={item.nome} data={item.data} imagem={item.imagem} pessimo={item.pessimo} ruim={item.ruim} neutro={item.neutro} bom={item.bom} excelente={item.excelente}/>
+            <HomeCard nome={item.nome} data={item.data} imagem={item.imagem} pessimo={item.pessimo} ruim={item.ruim} neutro={item.neutro} bom={item.bom} excelente={item.excelente} id={item.id}/>
         )
     }
 

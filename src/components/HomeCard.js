@@ -17,9 +17,10 @@ const HomeCard = (props) => {
     const neutro = props.neutro;
     const bom = props.bom;
     const excelente = props.excelente;
+    const id = props.id;
 
     const redirecionarAcoesPesquisa = () => {
-        dispatch(reducerPesquisa({nome: cardNome, data: cardData, imagem: cardImagem, pessimo: pessimo, ruim: ruim, neutro: neutro, bom: bom, excelente: excelente}));
+        dispatch(reducerPesquisa({nome: cardNome, data: cardData, imagem: cardImagem, pessimo: pessimo, ruim: ruim, neutro: neutro, bom: bom, excelente: excelente, id: id}));
         navigation.navigate('AcoesPesquisa');
     };
     return (
