@@ -9,6 +9,7 @@ const initialValues = {
     neutro: 0,
     bom: 0,
     excelente: 0,
+    id: 0,
 }
 
 export const pesquisaSlice = createSlice({
@@ -24,6 +25,7 @@ export const pesquisaSlice = createSlice({
             state.neutro = action.payload.neutro;
             state.bom = action.payload.bom;
             state.excelente = action.payload.excelente;
+            state.id = action.payload.id;
         }
     }
 })

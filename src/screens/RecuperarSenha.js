@@ -10,24 +10,34 @@ const RecuperacaoSenha = ({ navigation }) => {
 
     const validarEmail = () => {
         let email = txtEmail.trim();
-
+    
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setMostrarMensagem(true);
+            setMensagemErro('Digite um e-mail válido');
+            return;
+        }
+    
         sendPasswordResetEmail(auth_mod, email)
             .then(() => {
                 navigation.navigate('Login');
             })
             .catch((error) => {
+                console.error('Firebase Error:', error.code, error.message); // Log para depuração
                 setMostrarMensagem(true);
+    
                 if (error.code === 'auth/invalid-email') {
                     setMensagemErro('Digite um email válido');
-                }
-                else if (error.code === 'auth/user-not-found') {
-                    setMensagemErro('O email não foi encontrado');//por algum motivo isso não está funcionando, conversar com o professor
-                }
-                else if (error.code === 'auth/too-many-requests') {
+                } else if (error.code === 'auth/user-not-found') {
+                    setMensagemErro('O email não foi encontrado');
+                } else if (error.code === 'auth/too-many-requests') {
                     setMensagemErro('Tente novamente mais tarde');
+                } else {
+                    setMensagemErro('Ocorreu um erro inesperado');
                 }
             });
     };
+    
 
     return (
         <View style={estilos.container}>

@@ -21,51 +21,56 @@ const Cadastro = (props) => {
         setDoc(doc(db_firestore, "usuarios", id), docUser)
     }
 
-    const verificarLogin = () => {// Por algum motivo para dar login utilizando essa lógica é necessário apertar para entrar duas vezes
+    const verificarLogin = () => {
         let email = txtEmail.trim();
         let senha1 = txtSenha1.trim();
         let senha2 = txtSenha2.trim();
-
+    
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    
+        let emailValido = true;
+        let senhaValida = true;
+    
+        // Validação de email
         if (!emailRegex.test(email)) {
-            setMostrarMensagemEmail(true);
+            emailValido = false;
             setMensagemErroEmail('Digite um email válido');
-        } else {
-            setMostrarMensagemEmail(false);
         }
-        if (senha1 === '' && senha2 === '') {
-            setMostrarMensagemSenha(true);
+    
+        // Validação de senha
+        if (senha1 === '' || senha2 === '') {
+            senhaValida = false;
             setMensagemErroSenha('Digite uma senha');
-        } else {
-            if (senha1 !== senha2) {
-                setMostrarMensagemSenha(true);
-                setMensagemErroSenha('O campo repetir senha difere da senha');
-            } else {
-                if (senha1.length < 6) {
-                    setMostrarMensagemSenha(true);
-                    setMensagemErroSenha('A senha é muito fraca');
-                } else {
-                    setMostrarMensagemSenha(false);
-                }
-            }
+        } else if (senha1 !== senha2) {
+            senhaValida = false;
+            setMensagemErroSenha('O campo repetir senha difere da senha');
+        } else if (senha1.length < 6) {
+            senhaValida = false;
+            setMensagemErroSenha('A senha é muito fraca');
         }
-        if (!mostrarMensagemSenha) {
+    
+        // Atualiza os estados de erro
+        setMostrarMensagemEmail(!emailValido);
+        setMostrarMensagemSenha(!senhaValida);
+    
+        // Se tudo for válido, prossegue com o cadastro
+        if (emailValido && senhaValida) {
             createUserWithEmailAndPassword(auth_mod, email, senha1)
                 .then((userLogged) => {
                     addUsuario(email, userLogged.user.uid);
                     props.navigation.navigate('Login');
                 })
                 .catch((error) => {
-                    console.log(error)
                     if (error.code === 'auth/email-already-in-use') {
                         setMostrarMensagemEmail(true);
-                        setMensagemErroEmail('O email ja está em uso');
+                        setMensagemErroEmail('O email já está em uso');
+                    } else {
+                        console.log(error);
                     }
                 });
         }
     };
-
+    
 
     return (
         <View style={estilos.container}>

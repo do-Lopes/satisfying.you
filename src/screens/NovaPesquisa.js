@@ -62,42 +62,28 @@ const NovaPesquisa = (props) => {
         addDoc(pesquisaCollection, docPesquisa);
     }
 
-    const verificarDados = () => {//Por algum motivo é necessário apertar duas vezes para cadastrar no sistema. um clique para alternar o estado de 'setMostarMensagemNome' 'setMostrarMensagemData' e 'setMostrarMensagemImagem'. verifique os logs comentados abaixo pra ver.
+    const verificarDados = () => {
         const nome = txtNome.trim();
         const data = txtData.trim();
         const dataRegex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
-
-        if (nome === '') {
-            setMostarMensagemNome(true);
-        } else {
-            setMostarMensagemNome(false);
-        }
-        if (data === '') {
-            setMostrarMensagemData(true);
-        } else {
-            if (!dataRegex.test(data)) {
-                setMostrarMensagemData(true);
-            } else {
-                setMostrarMensagemData(false);
-            }
-        }
-        if (imagem === undefined){
-            setMostrarMensagemImagem(true)
-        }else{
-            setMostrarMensagemImagem(false)
-        }
-        // console.log("log do setMostarMensagemNome:" + mostarMensagemNome)
-        // console.log("log do setMostrarMensagemData: " + mostrarMensagemData)
-        // console.log("log do setMostrarMensagemImagem: " + mostrarMensagemImagem)
-
-        //addDados(mostarMensagemNome, mostrarMensagemData, mostrarMensagemImagem)
-
-         if (!mostarMensagemNome && !mostrarMensagemData && !mostrarMensagemImagem) {
+    
+        const nomeValido = nome !== '';
+        const dataValida = data !== '' && dataRegex.test(data);
+        const imagemValida = imagem !== undefined;
+    
+        // Atualiza as mensagens de erro
+        setMostarMensagemNome(!nomeValido);
+        setMostrarMensagemData(!dataValida);
+        setMostrarMensagemImagem(!imagemValida);
+    
+        // Só adiciona a pesquisa se todos os campos forem válidos
+        if (nomeValido && dataValida && imagemValida) {
             addPesquisa(nome, data);
-            console.log('adicionou no banco de dados')
+            console.log('adicionou no banco de dados');
             props.navigation.pop();
-         }
+        }
     };
+    
 
     return (
         <View style={estilos.container}>
