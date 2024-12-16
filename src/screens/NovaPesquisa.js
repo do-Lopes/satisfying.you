@@ -40,7 +40,7 @@ const NovaPesquisa = (props) => {
 
     const pickImage = () => {
         launchImageLibrary({ mediaType: 'photo' }, (result) => {
-            if(result.didCancel){
+            if (result.didCancel) {
                 setImagem();
             } else {
                 convertUriToBase64(result.assets[0].uri);
@@ -66,16 +66,15 @@ const NovaPesquisa = (props) => {
         const nome = txtNome.trim();
         const data = txtData.trim();
         const dataRegex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
-    
         const nomeValido = nome !== '';
         const dataValida = data !== '' && dataRegex.test(data);
         const imagemValida = imagem !== undefined;
-    
+
         // Atualiza as mensagens de erro
         setMostarMensagemNome(!nomeValido);
         setMostrarMensagemData(!dataValida);
         setMostrarMensagemImagem(!imagemValida);
-    
+
         // Só adiciona a pesquisa se todos os campos forem válidos
         if (nomeValido && dataValida && imagemValida) {
             addPesquisa(nome, data);
@@ -83,7 +82,7 @@ const NovaPesquisa = (props) => {
             props.navigation.pop();
         }
     };
-    
+
 
     return (
         <View style={estilos.container}>
@@ -110,9 +109,9 @@ const NovaPesquisa = (props) => {
 
                 <Text style={estilos.label}>Imagem</Text>
                 <Pressable onPress={pickImage} style={imagem ? estilos.imageInputComImagem : estilos.imageInputSemImagem}>
-                    {imagem ? 
-                    <Image source={{ uri: imagem }} style={{height: 70, width: 70}}/> :
-                    <Text style={estilos.imageInputText}>Escolha uma imagem</Text>
+                    {imagem ?
+                        <Image source={{ uri: imagem }} style={{ height: 70, width: 70 }} /> :
+                        <Text style={estilos.imageInputText}>Escolha uma imagem</Text>
                     }
                 </Pressable>
                 <Text style={mostrarMensagemImagem ? estilos.textoVermelho : estilos.textoRoxo}>Insira uma imagem</Text>

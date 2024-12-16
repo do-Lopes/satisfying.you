@@ -12,6 +12,7 @@ const Coleta = (props) => {
 
     const uid = useSelector((state) => state.login.uid);
     const  idPesquisa = useSelector((state) => state.pesquisa.id);
+    const  localNome = useSelector((state) => state.pesquisa.nome);
 
     const updateP = (idPesquisa) => {
         const satRef = doc(db_firestore,`usuarios/${uid}/pesquisas`, idPesquisa)
@@ -61,7 +62,7 @@ const Coleta = (props) => {
     return (
         <View style={estilos.view}>
             <Text style={estilos.Texto}>
-                O que você acho do carnaval 2024?
+                O que você acho do {localNome}?
             </Text>
             <View>
             <TouchableOpacity style={estilos.botaoVoltar} onPress={() => props.navigation.goBack()}>

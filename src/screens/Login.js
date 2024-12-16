@@ -38,36 +38,6 @@ const Login = (props) => {
                     setMensagemErro('Tente novamente mais tarde');
                 }
             });
-
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        // if (!emailRegex.test(email) || !senha) {
-        //     setMostrarMensagem(true);
-        //     setMensagemErro('E-mail e/ou senha inválido.');
-        // }
-        // else {
-        //     setMostrarMensagem(false);
-        // }
-        // if(!mostrarMensagem){
-        //     signInWithEmailAndPassword(auth_mod, email, senha)
-        //         .then((userLogged) => {
-        //             dispatch(reducerLogin({email: email, uid: userLogged.user.uid}))
-        //             props.navigation.navigate('Drawer');
-        //         })
-        //         .catch((error) => {
-        //             console.log(error)
-        //             setMostrarMensagem(true);
-        //             if (error.code === 'auth/invalid-email') {
-        //                 setMensagemErro('E-mail e/ou senha inválido.');
-        //             }
-        //             else if (error.code === 'auth/wrong-password') {
-        //                 setMensagemErro('E-mail e/ou senha inválido.');
-        //             }
-        //             else if (error.code === 'auth/invalid-credential') {
-        //                 setMensagemErro('E-mail e/ou senha inválido.');
-        //             }
-        //         });
-        // }
     };
 
     const redirecionarCadastro = () => {

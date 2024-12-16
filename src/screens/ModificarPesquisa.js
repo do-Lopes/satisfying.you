@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db_firestore } from '../firebase/config';
+import ImageResizer from 'react-native-image-resizer';
 
 
 const ModificarPesquisa = ({ route }) => {
@@ -68,13 +69,10 @@ const ModificarPesquisa = ({ route }) => {
         const updatePesquisa = (idPesquisa) => {
             const updateRef = doc(db_firestore, `usuarios/${uid}/pesquisas`, idPesquisa)
 
-            deleteDoc(doc(db_firestore, `usuarios/${uid}/pesquisas`, idPesquisa))
-            
             updateDoc(updateRef, {
                 nome: txtNome,
                 data: txtData,
-                imagem: txtImagem
-    
+                imagem: txtImagem,
             })
         }
 
@@ -110,7 +108,6 @@ const ModificarPesquisa = ({ route }) => {
             }else{
                 setMostrarMensagemImagem(false)
             }
-    
              if (!mostarMensagemNome && !mostrarMensagemData && !mostrarMensagemImagem) {
                 updatePesquisa(idPesquisa)
                 console.log('atualizou no banco de dados')
@@ -145,7 +142,7 @@ const ModificarPesquisa = ({ route }) => {
                         <Text style={estilos.imageInputText}>Escolha uma imagem</Text>
                         }
                     </Pressable>
-                    <Text style={mostrarMensagemImagem ? estilos.textoVermelho : estilos.textoRoxo}>Insira uma imagem</Text>            
+                    <Text style={mostrarMensagemImagem ? estilos.textoVermelho : estilos.textoRoxo}>Insira uma imagem</Text>
                 </View>
             
             <View style={estilos.redirectButtons}>
@@ -313,6 +310,14 @@ const estilos = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 5,
         alignItems: 'center',
+    },
+    textoRoxo: {
+        color: '#372775',
+        fontFamily: 'AveriaLibre-Regular',
+    },
+    textoVermelho: {
+        color: '#FD7979',
+        fontFamily: 'AveriaLibre-Regular',
     },
 });
 
